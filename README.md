@@ -11,6 +11,10 @@ Twanalyze is dependent on the [requests](http://docs.python-requests.org/en/late
 
 Twanalyze also needs a Twitter API key. You can get an API key by signing in to https://dev.twitter.com/apps with your Twitter username and password. Once you are signed in, click Create a new application.
 
+Configuration
+-------------
+Once you have obtained the Twitter API key, you will need to add the consumer key, consumer secret, token, and token_secret to the twanalyze.config.template file and rename the file to twanalyze.config.
+
 Usage
 -----
 python twanalyze.py screen_name
