@@ -36,5 +36,5 @@ nosetests.xml
 .pydevproject
 
 # Configuration Files
-.config
-.json
+*.config
+
