@@ -84,6 +84,6 @@ def parse_tweets(tweets):
 
         coord = __parse_coord(tweet)
         if coord is not None:
-            analysis.coords.append(coord)
+            analysis['coords'].append(coord)
 
     return analysis
