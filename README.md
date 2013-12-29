@@ -20,7 +20,7 @@ Usage
 -----
 To use twanalyze, provide a Twitter screen_name, a report file name, and a report format. Twanalyze can create an HTML, KML, or Markdown report. To create all three, use the all report format. If an invalid report format is specified, the a Markdown report is created.
 
-python twanalyze.py screen_name filename html|kml|md|all
+`python twanalyze.py screen_name filename html|kml|md|all`
 
 Sample Markdown Report
 ----------------------
