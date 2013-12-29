@@ -9,7 +9,7 @@ def create_kml_report(analysis, filename):
     kml = simplekml.Kml()
 
     for coord in analysis['coords']:
-        kml.newpoint(name=coord[0], coords=coord[1])
+        kml.newpoint(name=coord[0], coords=[coord[1]])
 
     if not filename.endswith('.kml'):
         filename = filename + '.kml'
@@ -26,11 +26,11 @@ def __md_user(user):
     Print various attributes of the user.
     '''
     u = u''
-    u += '{0}\n'.format(user['screen_name']) 
+    u += u'{0}\n'.format(user['screen_name']) 
     u += '-' * len(user['screen_name']) + '\n'
-    u += 'Name: {0}\n'.format(user['name'])
-    u += 'Description: {0}\n'.format(user['description'])
-    u += 'Location: {0}\n'.format(user['location'])
+    u += u'Name: {0}\n'.format(user['name'])
+    u += u'Description: {0}\n'.format(user['description'])
+    u += u'Location: {0}\n'.format(user['location'])
     u += 'Time Zone: {0}\n'.format(user['time_zone'])
     u += 'UTC Offset: {0}\n'.format(user['utc_offset']/3600)
     u += 'Tweets: {0}\n'.format(user['statuses_count'])
@@ -40,7 +40,7 @@ def __md_user(user):
     u += 'Following: {0}\n'.format(user['friends_count'])
     u += '\n'
 
-    return u 
+    return u.encode('utf-8')
 
 
 def __md_distribution(title, items, top=20):
@@ -57,15 +57,15 @@ def __md_distribution(title, items, top=20):
 
         for k in dist.keys()[:top]:
             if isinstance(k, tuple):
-                key = ' '.join(k)
+                key = u' '.join(k)
             else:
                 key = k
 
-            d += '{0} - {1}\n'.format(key, dist[k])
+            d += u'{0} - {1}\n'.format(key, dist[k])
 
         d += '\n'
 
-    return d
+    return d.encode('utf-8')
 
 
 def create_markdown_report(user, analysis, filename):
@@ -96,11 +96,11 @@ def __html_user(user):
     Print various attributes of the user in HTML.
     '''
     u = u''
-    u += '<h2>{0}</h2>\n'.format(user['screen_name'])
+    u += u'<h2>{0}</h2>\n'.format(user['screen_name'])
     u += '<p>\n' 
-    u += 'Name: {0}<br />\n'.format(user['name'])
-    u += 'Description: {0}<br />\n'.format(user['description'])
-    u += 'Location: {0}<br />\n'.format(user['location'])
+    u += u'Name: {0}<br />\n'.format(user['name'])
+    u += u'Description: {0}<br />\n'.format(user['description'])
+    u += u'Location: {0}<br />\n'.format(user['location'])
     u += 'Time Zone: {0}<br />\n'.format(user['time_zone'])
     u += 'UTC Offset: {0}<br />\n'.format(user['utc_offset']/3600)
     u += 'Tweets: {0}<br />\n'.format(user['statuses_count'])
@@ -110,7 +110,7 @@ def __html_user(user):
     u += 'Following: {0}<br />\n'.format(user['friends_count'])
     u += '</p>'
 
-    return u
+    return u.encode('utf-8')
 
 
 def __html_distribution(title, items, top=20):
@@ -135,7 +135,7 @@ def __html_distribution(title, items, top=20):
 
         d += '</p>\n'
 
-    return d
+    return d.encode('utf-8')
 
 
 def create_html_report(user, analysis, filename):
@@ -145,7 +145,8 @@ def create_html_report(user, analysis, filename):
     logging.info('Writing HTML report to {0}.'.format(filename))
 
     html = open(filename, 'w')
-    html.write('<html>\n<head></head>\n<body>\n')
+    html.write('<html>\n<head><meta charset="utf-8"></head>\n<body>\n')
+    html.wrtie('<h1>Twanalyze Report</h1>\n')
     html.write(__html_user(user))
     html.write(__html_distribution('Hashtags', analysis['hashtags']))
     html.write(__html_distribution('Mentions', analysis['mentions']))
