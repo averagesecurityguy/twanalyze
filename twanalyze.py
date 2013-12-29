@@ -41,10 +41,10 @@ format = sys.argv[3].lower()
 if format == 'html':
     twanalyze.report.create_html_report(user, analysis, report_file)
 elif format == 'kml':
-    twanalyze.report.create_kml_report(tweets, report_file)
+    twanalyze.report.create_kml_report(analysis, report_file)
 elif format == 'all':
     twanalyze.report.create_html_report(user, analysis, report_file)
-    twanalyze.report.create_kml_report(tweets, report_file)
+    twanalyze.report.create_kml_report(analysis, report_file)
     twanalyze.report.create_markdown_report(user, analysis, report_file)
 else:
     if format != 'md':
