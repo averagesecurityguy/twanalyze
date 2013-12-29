@@ -5,8 +5,9 @@ Twanalyze downloads account information and up to 3200 of the most recent tweets
 
 Prerequisites
 -------------
-Twanalyze is dependent on the [requests](http://docs.python-requests.org/en/latest/index.html) and [nltk](http://nltk.org/) libraries.
+Twanalyze is dependent on the [requests](http://docs.python-requests.org/en/latest/index.html), [simplekml](http://simplekml.readthedocs.org/en/latest/), and [nltk](http://nltk.org/) libraries.
 * `pip install requests`
+* `pip install simplekml`
 * `pip install nltk`
 
 Twanalyze also needs a Twitter API key. You can get an API key by signing in to https://dev.twitter.com/apps with your Twitter username and password. Once you are signed in, click Create a new application.
@@ -17,13 +18,16 @@ Once you have obtained the Twitter API key, you will need to add the consumer ke
 
 Usage
 -----
-python twanalyze.py screen_name
+To use twanalyze, provide a Twitter screen_name, a report file name, and a report format. Twanalyze can create an HTML, KML, or Markdown report. To create all three, use the all report format. If an invalid report format is specified, the a Markdown report is created.
 
-Output
-------
-	python twanalyze.py averagesecguy
+python twanalyze.py screen_name filename html|kml|md|all
+
+Sample Markdown Report
+----------------------
+	Twanalyze Report
+	================
 	averagesecguy
-	=============
+	-------------
 	Name: Stephen Haywood
 	Description: I have worked professionally as a programmer, school teacher, computer teacher, sysadmin and now as an information security auditor.
 	Location: 
@@ -36,7 +40,7 @@ Output
 	Following: 392
 
 	Hashtags
-	========
+	--------
 	#dc423 - 15
 	##dc423 - 8
 	#derbycon - 8
@@ -59,7 +63,7 @@ Output
 	#fivewordtechhorror - 2
 
 	Mentions
-	========
+	--------
 	@sawaba - 100
 	@tothehilt - 100
 	@jakx_ - 83
@@ -82,7 +86,7 @@ Output
 	@0xabad1dea - 26
 
 	Links
-	=====
+	-----
 	https://t.co/pYTSa5dkkV - 4
 	http://t.co/fuClE544f2 - 3
 	https://t.co/o31LqifFFf - 3
@@ -105,7 +109,7 @@ Output
 	http://t.co/fkCqdyPlKn - 2
 
 	3-word Phrases
-	==============
+	--------------
 	thanks for the - 34
 	a lot of - 25
 	if you are - 21
@@ -128,7 +132,7 @@ Output
 	how do i - 8
 
 	4-word Phrases
-	==============
+	--------------
 	let me know if - 14
 	me know if you - 10
 	may be able to - 7
@@ -151,7 +155,7 @@ Output
 	can anyone recommend a - 3
 
 	5-word Phrases
-	==============
+	--------------
 	let me know if you - 10
 	stephen [at] averagesecurityguy [dot] info - 6
 	me know if you have - 5
@@ -174,7 +178,7 @@ Output
 	@jimmyvo i'll never be bought - 2
 
 	Timestamps
-	==========
+	----------
 	15:00:00 +0000 - 281
 	14:00:00 +0000 - 269
 	19:00:00 +0000 - 255
