@@ -115,8 +115,7 @@ def __html_user(user):
     Print various attributes of the user in HTML.
     '''
     u = u''
-    u += u'<h2><a href="https://twitter.com/{0}">'.format(user['screen_name'])
-    u += u'{0}</a></h2>\n'.format(user['screen_name'])
+    u += u'<h2>{0}</h2>\n'.format(user['screen_name'])
     u += '<ul>\n' 
     u += u'<li>Name: {0}</li>\n'.format(user['name'])
     u += u'<li>Description: {0}</li>\n'.format(user['description'])
@@ -172,7 +171,12 @@ def create_html_report(user, analysis, filename):
     logging.info('Writing HTML report to {0}.'.format(filename))
 
     html = open(filename, 'w')
-    html.write('<html>\n<head><meta charset="utf-8"></head>\n<body>\n')
+    html.write('<html>\n<head>\n<meta charset="utf-8">\n')
+    html.write('<style type="text/css">\n')
+    html.write('h1, h2 {font-family: Georgia, "Times New Roman", serif;}\n')
+    html.write('body {font-family: Helvetica, Tahoma, Arial, sans-serif;}\n')
+    html.write('li {margin: 0; padding: 0; list-style-type: none;}\n')
+    html.write('</style>\n</head>\n<body>\n')
     html.write('<h1>Twanalyze Report</h1>\n')
     html.write(__html_user(user))
     html.write(__html_distribution('Hashtags', analysis['hashtags']))
