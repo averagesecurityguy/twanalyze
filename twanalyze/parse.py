@@ -1,28 +1,33 @@
 import nltk
 import re
 
-def __parse_words(t):
+def __parse_hashtags(t):
     '''
-    Split the tweet into words. Pull out hashtags, mentions, and links.
+    Get any hashtags from the hashtags entity.
     '''
-    ht = []
-    mt = []
-    li = []
+    if t.get('entities') is not None:
+        return [h['text'] for h in t['entities']['hashtags']]
+    else:
+        return []
 
-    for word in t['text'].split(' '):
-        if word.startswith('#'):
-            ht.append(word.lower().lstrip('#'))
-            continue
+def __parse_links(t):
+    '''
+    Get any links from the urls entity.
+    '''
+    if t.get('entities') is not None:
+        return [u['expanded_url'] for u in t['entities']['urls']]
+    else:
+        return []
 
-        if word.startswith('@'):
-            mt.append(word.lower().lstrip('@'))
-            continue
 
-        if word.startswith('http'):
-            li.append(word)
-            continue
-
-    return ht, mt, li            
+def __parse_mentions(t):
+    '''
+    Get any mentions from the user_mentions entity.
+    '''
+    if t.get('entities') is not None:
+        return [m['screen_name'] for m in t['entities']['user_mentions']]
+    else:
+        return []
 
 
 def __parse_phrases(t, count):
@@ -66,10 +71,10 @@ def parse_tweets(tweets):
                 'coords': []}
 
     for tweet in tweets:
-        ht, mt, li = __parse_words(tweet)
-        analysis['hashtags'].extend(ht)
-        analysis['mentions'].extend(mt)
-        analysis['links'].extend(li)
+        # ht, mt, li = __parse_words(tweet)
+        analysis['hashtags'].extend(__parse_hashtags(tweet))
+        analysis['mentions'].extend(__parse_mentions(tweet))
+        analysis['links'].extend(__parse_links(tweet))
 
         analysis['phrase3'].extend(__parse_phrases(tweet, 3))
         analysis['phrase4'].extend(__parse_phrases(tweet, 4))
