@@ -11,11 +11,11 @@ def __parse_words(t):
 
     for word in t['text'].split(' '):
         if word.startswith('#'):
-            ht.append(word.lower())
+            ht.append(word.lower().lstrip('#'))
             continue
 
         if word.startswith('@'):
-            mt.append(word.lower())
+            mt.append(word.lower().lstrip('@'))
             continue
 
         if word.startswith('http'):
@@ -26,7 +26,8 @@ def __parse_words(t):
 
 
 def __parse_phrases(t, count):
-    return nltk.util.ngrams(t['text'].lower().split(), count)
+    ngrams = nltk.util.ngrams(t['text'].lower().split(), count)
+    return [' '.join(ngram) for ngram in ngrams]
 
 
 def __parse_time(timestamp):

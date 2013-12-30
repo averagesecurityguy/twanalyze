@@ -16,6 +16,7 @@ def create_raw_report(user, tweets, filename):
     raw.write(json.dumps(report, indent=2))
     raw.close()
 
+
 #-----------------------------------------------------------------------------
 # KML REPORT
 #-----------------------------------------------------------------------------
@@ -59,8 +60,8 @@ def __md_user(user):
 
 def __md_distribution(title, items, top=20):
     '''
-    Calculate the frequency distribution of the list of items. Print the 20
-    most frequent items in the list.
+    Calculate the frequency distribution of the list of items. Convert the
+    top most frequent items in the list to Markdown
     '''
     d = u''
     if len(items) != 0:
@@ -70,12 +71,16 @@ def __md_distribution(title, items, top=20):
         dist = nltk.FreqDist(items)
 
         for k in dist.keys()[:top]:
-            if isinstance(k, tuple):
-                key = u' '.join(k)
+            if title == 'Hashtags':
+                link = 'https://twitter.com/search?q=%23{0}'.format(k)
+                d += u'* [#{0}]({1}) - {2}\n'.format(k, link, dist[k])
+            elif title == 'Mentions':
+                link = 'https://twitter.com/{0}'.format(k)
+                d += u'* [@{0}]({1}) - {2}\n'.format(k, link, dist[k])
+            elif title == 'Links':
+                d += u'* [{0}]({0}) - {1}\n'.format(k, dist[k])
             else:
-                key = k
-
-            d += u'{0} - {1}\n'.format(key, dist[k])
+                d += u'* {0} - {1}\n'.format(k, dist[k])
 
         d += '\n'
 
@@ -110,19 +115,20 @@ def __html_user(user):
     Print various attributes of the user in HTML.
     '''
     u = u''
-    u += u'<h2>{0}</h2>\n'.format(user['screen_name'])
-    u += '<p>\n' 
-    u += u'Name: {0}<br />\n'.format(user['name'])
-    u += u'Description: {0}<br />\n'.format(user['description'])
-    u += u'Location: {0}<br />\n'.format(user['location'])
-    u += 'Time Zone: {0}<br />\n'.format(user['time_zone'])
-    u += 'UTC Offset: {0}<br />\n'.format(user['utc_offset']/3600)
-    u += 'Tweets: {0}<br />\n'.format(user['statuses_count'])
-    u += 'Favorites: {0}<br />\n'.format(user['favourites_count'])
-    u += 'Listed: {0}<br />\n'.format(user['listed_count'])
-    u += 'Followers: {0}<br />\n'.format(user['followers_count'])
-    u += 'Following: {0}<br />\n'.format(user['friends_count'])
-    u += '</p>'
+    u += u'<h2><a href="https://twitter.com/{0}">'.format(user['screen_name'])
+    u += u'{0}</a></h2>\n'.format(user['screen_name'])
+    u += '<ul>\n' 
+    u += u'<li>Name: {0}</li>\n'.format(user['name'])
+    u += u'<li>Description: {0}</li>\n'.format(user['description'])
+    u += u'<li>Location: {0}</li>\n'.format(user['location'])
+    u += '<li>Time Zone: {0}</li>\n'.format(user['time_zone'])
+    u += '<li>UTC Offset: {0}</li>\n'.format(user['utc_offset']/3600)
+    u += '<li>Tweets: {0}</li>\n'.format(user['statuses_count'])
+    u += '<li>Favorites: {0}</li>\n'.format(user['favourites_count'])
+    u += '<li>Listed: {0}</li>\n'.format(user['listed_count'])
+    u += '<li>Followers: {0}</li>\n'.format(user['followers_count'])
+    u += '<li>Following: {0}</li>\n'.format(user['friends_count'])
+    u += '</ul>'
 
     return u.encode('utf-8')
 
@@ -135,19 +141,26 @@ def __html_distribution(title, items, top=20):
     d = u''
     if len(items) != 0:
         d += '<h2>{0}</h2>\n'.format(title)
-        d += '<p>\n'
+        d += '<ul>\n'
 
         dist = nltk.FreqDist(items)
 
         for k in dist.keys()[:top]:
-            if isinstance(k, tuple):
-                key = ' '.join(k)
+            if title == 'Hashtags':
+                link = 'https://twitter.com/search?q=%23{0}'.format(k)
+                d += u'<li><a href="{0}">'.format(link)
+                d += u'#{0}</a> - {1}</li>\n'.format(k, dist[k])
+            elif title == 'Mentions':
+                link = 'https://twitter.com/{0}'.format(k)
+                d += u'<li><a href="{0}">'.format(link)
+                d += u'@{0}</a> - {1}</li>\n'.format(k, dist[k])
+            elif title == 'Links':
+                d += u'<li><a href="{0}">'.format(k)
+                d += u'{0}</a> - {1}</li>\n'.format(k, dist[k])
             else:
-                key = k
+                d += u'<li>{0} - {1}</li>\n'.format(k, dist[k])
 
-            d += u'{0} - {1}<br />\n'.format(key, dist[k])
-
-        d += '</p>\n'
+        d += '</ul>\n'
 
     return d.encode('utf-8')
 
@@ -160,7 +173,7 @@ def create_html_report(user, analysis, filename):
 
     html = open(filename, 'w')
     html.write('<html>\n<head><meta charset="utf-8"></head>\n<body>\n')
-    html.wrtie('<h1>Twanalyze Report</h1>\n')
+    html.write('<h1>Twanalyze Report</h1>\n')
     html.write(__html_user(user))
     html.write(__html_distribution('Hashtags', analysis['hashtags']))
     html.write(__html_distribution('Mentions', analysis['mentions']))
