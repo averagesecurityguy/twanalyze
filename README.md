@@ -18,9 +18,18 @@ Once you have obtained the Twitter API key, you will need to add the consumer ke
 
 Usage
 -----
-To use twanalyze, provide a Twitter screen_name, a report file name, and a report format. Twanalyze can create an HTML, KML, or Markdown report. To create all three, use the all report format. If an invalid report format is specified, the a Markdown report is created.
+To use twanalyze, provide a Twitter screen_name, a report file name, and a report format.
 
-`python twanalyze.py screen_name filename html|kml|md|all`
+`python twanalyze.py screen_name filename html|kml|md|raw|all`
+
+Report Formats
+--------------
+Twanalyze supports four report formats, which are described below. A report format must be specified when launching the script. If an invalid report format is given then a Markdown report will be generated.
+
+* Markdown - Creates a Markdown formatted report with user details and the analysis results.
+* HTML - Creates an HTML formatted report with user details and the analysis results.
+* KML - Creates a KML file with lat and lon coordinates and timestamp for any tweets that contain location data.
+* Raw - Creates a JSON file with all of the downloaded user data and tweets. This could be a very large file.
 
 Sample Markdown Report
 ----------------------

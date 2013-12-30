@@ -1,6 +1,20 @@
 import simplekml
 import nltk
 import logging
+import json
+
+#-----------------------------------------------------------------------------
+# RAW REPORT
+#-----------------------------------------------------------------------------
+def create_raw_report(user, tweets, filename):
+    if not filename.endswith('.json'):
+        filename = filename + '.json'
+
+    report = {'user': user, 'tweets': tweets}
+
+    raw = open(filename, 'w')
+    raw.write(json.dumps(report, indent=2))
+    raw.close()
 
 #-----------------------------------------------------------------------------
 # KML REPORT
