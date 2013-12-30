@@ -6,7 +6,7 @@ def __parse_hashtags(t):
     Get any hashtags from the hashtags entity.
     '''
     if t.get('entities') is not None:
-        return [h['text'] for h in t['entities']['hashtags']]
+        return [h['text'].lower() for h in t['entities']['hashtags']]
     else:
         return []
 
@@ -25,7 +25,7 @@ def __parse_mentions(t):
     Get any mentions from the user_mentions entity.
     '''
     if t.get('entities') is not None:
-        return [m['screen_name'] for m in t['entities']['user_mentions']]
+        return [m['screen_name'].lower() for m in t['entities']['user_mentions']]
     else:
         return []
 
