@@ -30,6 +30,7 @@ Twanalyze supports four report formats, which are described below. A report form
 * HTML - Creates an HTML formatted report with user details and the analysis results.
 * KML - Creates a KML file with lat and lon coordinates and timestamp for any tweets that contain location data.
 * Raw - Creates a JSON file with all of the downloaded user data and tweets. This could be a very large file.
+* All - Creates reports in Markdown, HTML, and KML formats.
 
 Sample Markdown Report
 ----------------------
