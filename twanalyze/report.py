@@ -10,6 +10,8 @@ def create_raw_report(user, tweets, filename):
     if not filename.endswith('.json'):
         filename = filename + '.json'
 
+    logging.info('Writing RAW report to {0}.'.format(filename))
+
     report = {'user': user, 'tweets': tweets}
 
     raw = open(filename, 'w')
@@ -20,16 +22,22 @@ def create_raw_report(user, tweets, filename):
 #-----------------------------------------------------------------------------
 # KML REPORT
 #-----------------------------------------------------------------------------
-def create_kml_report(analysis, filename):
-    kml = simplekml.Kml()
-
-    for coord in analysis['coords']:
-        kml.newpoint(name=coord[0], coords=[coord[1]])
-
+def create_kml_report(tweets, filename):
     if not filename.endswith('.kml'):
         filename = filename + '.kml'
 
     logging.info('Writing KML report to {0}.'.format(filename))
+
+    kml = simplekml.Kml()
+
+    for tweet in tweets:
+        if tweet['coordinates'] is not None:
+            timestamp = simplekml.TimeStamp(when=tweet['created_at'])
+            kml.newpoint(name=tweet['id_str'],
+                         description=tweet['text'],
+                         timestamp=timestamp,
+                         coords=[tuple(tweet['coordinates']['coordinates'])])
+
     kml.save(filename)
 
 

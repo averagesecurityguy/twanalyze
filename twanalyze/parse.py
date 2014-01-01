@@ -57,18 +57,9 @@ def __parse_place(place):
         return None
 
 
-def __parse_coord(tweet):
-    coords = tweet.get('coordinates')
-    if coords is not None:
-        return (tweet['created_at'], tuple(coords['coordinates']))
-    else:
-        return None
-
-
 def parse_tweets(tweets):
     analysis = {'hashtags': [], 'mentions': [], 'links': [], 'phrase3': [],
-                'phrase4': [], 'phrase5': [], 'times': [], 'places': [],
-                'coords': []}
+                'phrase4': [], 'phrase5': [], 'times': [], 'places': []}
 
     for tweet in tweets:
         # ht, mt, li = __parse_words(tweet)
@@ -87,9 +78,5 @@ def parse_tweets(tweets):
         place = __parse_place(tweet['place'])
         if place is not None:
             analysis['places'].append(place)
-
-        coord = __parse_coord(tweet)
-        if coord is not None:
-            analysis['coords'].append(coord)
 
     return analysis
